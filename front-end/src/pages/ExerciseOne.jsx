@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import styled from "styled-components";
 
 const words = [
 	"Robin",
@@ -12,6 +13,41 @@ const words = [
 	"Chaffinch",
 	"Long-tailed tit"
 ];
+
+const Page = styled.div`
+	display: flex;
+	flex-flow: column nowrap;
+	height: 100vh;
+	width: 100vw;
+	background-color: ${props => props.theme.secondary};
+`;
+
+const Container = styled.div`
+	align-items: center;
+	color: white;
+	display: flex;
+	flex-flow: row nowrap;
+	font-family: Arial;
+	font-size: 2.5rem;
+	height: 100%;
+	justify-content: center;
+	text-align: center;
+	width: 100%;
+`;
+
+const Side = styled.div`
+	color: ${props => props.theme.accent};
+	font-size: 1.2em;
+	font-weight: 600;
+	transform: ${props => (props.active ? "scale(1)" : "scale(0)")};
+	transition: transform 0.2s;
+`;
+
+const WordDisplay = styled.h2`
+	display: inline-block;
+	color: ${props => props.theme.light};
+	margin: 1rem;
+`;
 
 // Handle switching to next value, and return updated state
 const nextValue = state => {
@@ -82,13 +118,13 @@ const ExerciseOne = () => {
 	}, [gameState]);
 
 	return (
-		<div>
-			<p>
-				{gameState.side && <span> &gt; </span>}
-				{gameState.value}
-				{!gameState.side && <span> &lt; </span>}
-			</p>
-		</div>
+		<Page>
+			<Container>
+				<Side active={gameState.side}> &gt; </Side>
+				<WordDisplay>{gameState.value} </WordDisplay>
+				<Side active={!gameState.side}> &lt; </Side>
+			</Container>
+		</Page>
 	);
 };
 
