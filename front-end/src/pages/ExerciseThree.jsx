@@ -57,11 +57,11 @@ const updateDisplay = (ctx, screenSize, squares, squareSize) => {
 	drawSquares(squares, squareSize, ctx);
 };
 
-const getMouse = e => {
-	const element = e.target.getBoundingClientRect();
+const getMouse = (e, canvasEl) => {
+	const canvas = canvasEl.getBoundingClientRect();
 	return {
-		x: e.clientX - element.left,
-		y: e.clientY - element.top
+		x: e.clientX - canvas.left,
+		y: e.clientY - canvas.top
 	};
 };
 
@@ -80,6 +80,7 @@ const ExerciseThree = () => {
 	});
 
 	useEffect(() => {
+		console.log("RENDER");
 		const canvas = canvasEl.current;
 
 		// Resize canvas
@@ -94,34 +95,44 @@ const ExerciseThree = () => {
 		// Handle mouse events
 		const onMouseMove = e => {
 			if (mouse.clicked) {
-				const newMouse = Object.assign({}, mouse);
-
-				// Add current spot to mousedOver
-				const index = checkCollision(getMouse(e), squares, squareSize);
-				Number.isInteger(index) &&
-					!newMouse.mousedOver.includes(index) &&
-					newMouse.mousedOver.push(index);
-
-				// Show intermediary state
-				setSquares(
-					squares.map((s, i) =>
-						newMouse.mousedOver.includes(i)
-							? mode === "ADD"
-								? true
-								: mode === "REMOVE"
-								? false
-								: s
-							: s
-					)
+				const index = checkCollision(
+					getMouse(e, canvas),
+					squares,
+					squareSize
 				);
+				if (
+					Number.isInteger(index) &&
+					!mouse.mousedOver.includes(index)
+				) {
+					// Update state
+					setSquares(
+						squares.map((s, i) => {
+							if (i === index) {
+								return mode === "ADD"
+									? true
+									: mode === "REMOVE"
+									? false
+									: s;
+							} else {
+								return s;
+							}
+						})
+					);
 
-				// Update state
-				setMouse(newMouse);
+					setMouse({
+						...mouse,
+						mousedOver: mouse.mousedOver.concat(index)
+					});
+				}
 			}
 		};
 
 		const onMouseDown = e => {
-			const index = checkCollision(getMouse(e), squares, squareSize);
+			const index = checkCollision(
+				getMouse(e, canvas),
+				squares,
+				squareSize
+			);
 			setMode(
 				Number.isInteger(index)
 					? squares[index] === false
@@ -133,33 +144,30 @@ const ExerciseThree = () => {
 		};
 
 		const onMouseUp = e => {
-			setMouse({ ...mouse, clicked: false });
-
-			// Work with mutable state
-			const newMouse = Object.assign({}, mouse);
-
-			// Add current spot to mousedOver
-			const index = checkCollision(getMouse(e), squares, squareSize);
-			Number.isInteger(index) &&
-				!newMouse.mousedOver.includes(index) &&
-				newMouse.mousedOver.push(index);
-
-			// Change mousedOver square state
-			setSquares(
-				squares.map((s, i) =>
-					newMouse.mousedOver.includes(i)
-						? mode === "ADD"
-							? true
-							: mode === "REMOVE"
-							? false
-							: s
-						: s
-				)
+			// Add current spot to mousedOver ( in case mousemove did not trigger )
+			const index = checkCollision(
+				getMouse(e, canvas),
+				squares,
+				squareSize
 			);
-			newMouse.mousedOver = []; // Clear mousedOver array
+			if (Number.isInteger(index) && !mouse.mousedOver.includes(index)) {
+				setSquares(
+					squares.map((s, i) => {
+						if (i === index) {
+							return mode === "ADD"
+								? true
+								: mode === "REMOVE"
+								? false
+								: s;
+						} else {
+							return s;
+						}
+					})
+				);
+			}
 
 			// Update state
-			setMouse({ ...newMouse, clicked: false });
+			setMouse({ ...mouse, mousedOver: [], clicked: false });
 		};
 
 		window.addEventListener("mousemove", onMouseMove);
@@ -171,7 +179,7 @@ const ExerciseThree = () => {
 			window.removeEventListener("mousedown", onMouseDown);
 			window.removeEventListener("mouseup", onMouseUp);
 		};
-	}, [mouse, squares]);
+	}, [mouse, squares, mode]);
 
 	return <Grid ref={canvasEl}></Grid>;
 };
