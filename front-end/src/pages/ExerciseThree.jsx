@@ -70,6 +70,7 @@ const ExerciseThree = () => {
 	const [squares, setSquares] = useState(
 		new Array(Math.pow(GRIDSIZE, 2)).fill(false)
 	);
+	const [mode, setMode] = useState("ADD");
 
 	const [mouse, setMouse] = useState({
 		clicked: false,
@@ -102,17 +103,34 @@ const ExerciseThree = () => {
 					newMouse.mousedOver.push(index);
 
 				// Show intermediary state
-				const tempSquares = squares.map((s, i) =>
-					newMouse.mousedOver.includes(i) ? (s ? false : true) : s
+				setSquares(
+					squares.map((s, i) =>
+						newMouse.mousedOver.includes(i)
+							? mode === "ADD"
+								? true
+								: mode === "REMOVE"
+								? false
+								: s
+							: s
+					)
 				);
-				updateDisplay(ctx, canvas.width, tempSquares, squareSize);
 
 				// Update state
 				setMouse(newMouse);
 			}
 		};
 
-		const onMouseDown = e => setMouse({ ...mouse, clicked: true });
+		const onMouseDown = e => {
+			const index = checkCollision(getMouse(e), squares, squareSize);
+			setMode(
+				Number.isInteger(index)
+					? squares[index] === false
+						? "ADD"
+						: "REMOVE"
+					: "NONE"
+			);
+			setMouse({ ...mouse, clicked: true });
+		};
 
 		const onMouseUp = e => {
 			setMouse({ ...mouse, clicked: false });
@@ -129,7 +147,13 @@ const ExerciseThree = () => {
 			// Change mousedOver square state
 			setSquares(
 				squares.map((s, i) =>
-					newMouse.mousedOver.includes(i) ? (s ? false : true) : s
+					newMouse.mousedOver.includes(i)
+						? mode === "ADD"
+							? true
+							: mode === "REMOVE"
+							? false
+							: s
+						: s
 				)
 			);
 			newMouse.mousedOver = []; // Clear mousedOver array
