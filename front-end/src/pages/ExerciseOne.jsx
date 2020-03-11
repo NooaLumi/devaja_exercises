@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
+import { Page } from "../components/Page";
 
 const words = [
 	"Robin",
@@ -13,14 +14,6 @@ const words = [
 	"Chaffinch",
 	"Long-tailed tit"
 ];
-
-const Page = styled.div`
-	display: flex;
-	flex-flow: column nowrap;
-	height: 100vh;
-	width: 100vw;
-	background-color: ${props => props.theme.secondary};
-`;
 
 const Container = styled.div`
 	align-items: center;
@@ -49,13 +42,40 @@ const WordDisplay = styled.h2`
 	margin: 1rem;
 `;
 
+const Background = styled.div`
+	@keyframes scale-up-center {
+		0% {
+			transform: scale(0.5);
+		}
+		100% {
+			transform: scale(1);
+		}
+	}
+
+	align-items: center;
+	color: ${props => props.theme.dark};
+	display: flex;
+	font-size: 30rem;
+	height: 100%;
+	justify-content: center;
+	left: 0;
+	opacity: 0.4;
+	position: absolute;
+	top: 0;
+	width: 100%;
+	z-index: -1;
+	/* Source for animation and keyframes: https://animista.net/play/basic/scale-up */
+	animation: scale-up-center 0.4s cubic-bezier(0.39, 0.575, 0.565, 1) both;
+`;
+
 // Handle switching to next value, and return updated state
 const nextValue = state => {
 	if (!words[state.index + 1]) {
 		return {
 			...state,
-			value: undefined,
-			gameOver: true
+			value: "GameOver",
+			gameOver: true,
+			side: true
 		};
 	} else {
 		return {
@@ -101,12 +121,10 @@ const ExerciseOne = () => {
 	useEffect(() => {
 		// Handle user input
 		const onKeyDown = ({ key }) => {
-			if (!gameState.gameOver) {
-				const newState = deleteLetter(gameState, key);
-				setGameState(
-					newState.value.length <= 0 ? nextValue(newState) : newState
-				);
-			}
+			const newState = deleteLetter(gameState, key);
+			setGameState(
+				newState.value.length <= 0 ? nextValue(newState) : newState
+			);
 		};
 
 		// Listen to user input
@@ -123,6 +141,11 @@ const ExerciseOne = () => {
 				<Side active={gameState.side}> &gt; </Side>
 				<WordDisplay>{gameState.value} </WordDisplay>
 				<Side active={!gameState.side}> &lt; </Side>
+				<Background>
+					{gameState.value[
+						gameState.side ? 0 : gameState.value.length - 1
+					].toUpperCase()}
+				</Background>
 			</Container>
 		</Page>
 	);
