@@ -12,7 +12,7 @@ const words = [
 	"Goldfinch",
 	"Great tit",
 	"Chaffinch",
-	"Long-tailed tit"
+	"Long-tailed tit",
 ];
 
 const Container = styled.div`
@@ -22,23 +22,29 @@ const Container = styled.div`
 	flex-flow: row nowrap;
 	font-family: Arial;
 	font-size: 2.5rem;
-	height: 100%;
 	justify-content: center;
+	align-items: center;
 	text-align: center;
 	width: 100%;
+	height: fit-content;
+
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
 `;
 
 const Side = styled.div`
-	color: ${props => props.theme.accent};
+	color: ${(props) => props.theme.accent};
 	font-size: 1.2em;
 	font-weight: 600;
-	transform: ${props => (props.active ? "scale(1)" : "scale(0)")};
+	transform: ${(props) => (props.active ? "scale(1)" : "scale(0)")};
 	transition: transform 0.2s;
 `;
 
 const WordDisplay = styled.h2`
 	display: inline-block;
-	color: ${props => props.theme.light};
+	color: ${(props) => props.theme.light};
 	margin: 1rem;
 `;
 
@@ -53,7 +59,7 @@ const Background = styled.div`
 	}
 
 	align-items: center;
-	color: ${props => props.theme.dark};
+	color: ${(props) => props.theme.dark};
 	display: flex;
 	font-size: 30rem;
 	height: 100%;
@@ -69,20 +75,20 @@ const Background = styled.div`
 `;
 
 // Handle switching to next value, and return updated state
-const nextValue = state => {
+const nextValue = (state) => {
 	if (!words[state.index + 1]) {
 		return {
 			...state,
 			value: "GameOver",
 			gameOver: true,
-			side: true
+			side: true,
 		};
 	} else {
 		return {
 			...state,
 			value: words[state.index + 1].split(" ").join(""), // Set new value
 			index: state.index + 1, // Increment index
-			side: true // Reset side
+			side: true, // Reset side
 		};
 	}
 };
@@ -99,13 +105,13 @@ const deleteLetter = (state, key) => {
 			// Delete key from value
 			value: value
 				.split("")
-				.filter(l => l.toLowerCase() !== key)
-				.join("")
+				.filter((l) => l.toLowerCase() !== key)
+				.join(""),
 		};
 	} else {
 		return {
 			...state,
-			side: !side
+			side: !side,
 		};
 	}
 };
@@ -115,7 +121,7 @@ const ExerciseOne = () => {
 		value: words[0],
 		index: 0,
 		side: true,
-		gameOver: false
+		gameOver: false,
 	});
 
 	useEffect(() => {

@@ -7,6 +7,15 @@ import { ExerciseThree } from "./pages/ExerciseThree";
 
 import { createGlobalStyle, ThemeProvider } from "styled-components";
 
+// Color scheme for theme provider
+const mainTheme = {
+	main: "#669D31",
+	secondary: "#0B7A75",
+	accent: "#DB324D",
+	dark: "#394648",
+	light: "#EDDDD4",
+};
+
 // Overwrite browser defaults
 const GlobalStyle = createGlobalStyle`
 	* {
@@ -18,16 +27,11 @@ const GlobalStyle = createGlobalStyle`
 	:root {
 		font-family: "Raleway", Arial, Helvetica, sans-serif;
 	}
-`;
 
-// Color scheme for theme provider
-const mainTheme = {
-	main: "#669D31",
-	secondary: "#0B7A75",
-	accent: "#DB324D",
-	dark: "#394648",
-	light: "#EDDDD4"
-};
+	body {
+		background: ${mainTheme.secondary};
+	}
+`;
 
 const App = () => {
 	return (
