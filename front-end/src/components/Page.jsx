@@ -30,6 +30,7 @@ const Nav = styled.div`
 	width: fit-content;
 	font-size: 1rem;
 	color: ${(props) => props.theme.dark};
+	margin-right: 1.5rem;
 
 	& > .is-active {
 		color: ${(props) => props.theme.accent};
@@ -49,7 +50,7 @@ const Nav = styled.div`
 const Logo = styled.h1`
 	color: ${(props) => props.theme.dark};
 	font-size: 1.3rem;
-	margin-left: 0.5rem;
+	margin-left: 1.5rem;
 	font-weight: normal;
 	user-select: none;
 `;

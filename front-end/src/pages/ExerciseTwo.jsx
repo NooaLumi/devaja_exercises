@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import styled from "styled-components";
 
 import { ItemForm } from "../components/ItemForm";
 import { ItemFilter } from "../components/ItemFilter";
@@ -17,7 +18,7 @@ const getItems = () =>
 		: storage;
 
 // Add an item to local storage
-const addItem = item => {
+const addItem = (item) => {
 	const { content, topic } = item;
 	if (typeof localStorage !== "undefined") {
 		localStorage.setItem(
@@ -26,7 +27,7 @@ const addItem = item => {
 				getItems().concat({
 					date: new Date(),
 					content,
-					topic
+					topic,
 				})
 			)
 		);
@@ -34,10 +35,15 @@ const addItem = item => {
 		storage.push({
 			date: new Date(),
 			content,
-			topic
+			topic,
 		});
 	}
 };
+
+const Container = styled.div`
+	width: 60%;
+	margin: 0 auto;
+`;
 
 const ExerciseTwo = () => {
 	const [filter, setFilter] = useState("CSS");
@@ -47,27 +53,31 @@ const ExerciseTwo = () => {
 	// Get initial items
 	useEffect(() => setItems(getItems()), []);
 
-	const onItemSubmit = content => {
+	const onItemSubmit = (content) => {
 		addItem({
 			topic: filter,
-			content
+			content,
 		});
 		setItems(getItems());
 	};
 
 	return (
 		<Page>
-			<ItemForm
-				onSubmit={onItemSubmit}
-				visible={showForm}
-				show={setShowForm}
-			/>
-			<ItemFilter onChange={({ target }) => setFilter(target.value)} />
-			<ItemDisplay
-				filter={filter}
-				items={items}
-				showForm={() => setShowForm(true)}
-			/>
+			<Container>
+				<ItemForm
+					onSubmit={onItemSubmit}
+					visible={showForm}
+					show={setShowForm}
+				/>
+				<ItemFilter
+					onChange={({ target }) => setFilter(target.value)}
+				/>
+				<ItemDisplay
+					filter={filter}
+					items={items}
+					showForm={() => setShowForm(true)}
+				/>
+			</Container>
 		</Page>
 	);
 };

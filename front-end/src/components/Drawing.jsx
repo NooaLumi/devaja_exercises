@@ -11,7 +11,7 @@ const updateDisplay = (ctx, screenSize, squares, sSize) => {
 
 const resizeCanvas = (canvas) => {
 	canvas.width = canvas.height =
-		Math.min(window.innerWidth, window.innerHeight) / 15;
+		Math.min(window.innerWidth, window.innerHeight) / 6;
 };
 
 const Grid = styled.canvas`
@@ -20,7 +20,7 @@ const Grid = styled.canvas`
 	background: ${(props) => props.theme.light};
 `;
 
-const Drawing = ({ squares, onClick }) => {
+const Drawing = ({ squares, onClick, className }) => {
 	const canvasEl = useRef(null);
 
 	useEffect(() => {
@@ -40,6 +40,12 @@ const Drawing = ({ squares, onClick }) => {
 		return () => window.removeEventListener("resize", onWindowResize);
 	}, [squares]);
 
-	return <Grid ref={canvasEl} onClick={() => onClick(squares)} />;
+	return (
+		<Grid
+			ref={canvasEl}
+			className={className}
+			onClick={() => onClick(squares)}
+		/>
+	);
 };
 export { Drawing };

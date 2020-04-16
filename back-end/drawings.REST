@@ -1,0 +1,27 @@
+POST http://localhost:5000/api/drawings
+Content-Type: application/json
+
+{
+	"squares": [
+  true,  true,  false, true,  true,  false, true,
+  false, true,  true,  false, true,  true,  false,
+  true,  false, true,  true,  false, true,  true,
+  true,  true,  false, true,  true,  false, true,
+  true,  false, true,  true,  false, true,  true,
+  false, true,  true,  false, true,  true,  false,
+  false, true,  true,  false, true,  true,  false,
+  true,  true,  false, true,  true,  false, true,
+  true,  false, true,  true,  false, true,  true,
+  false
+]
+}
+
+###
+
+GET http://localhost:5000/api/drawings
+
+###
+
+GET http://localhost:5000/api/drawings/5e9827d0ad61459cb919eed5
+
+###

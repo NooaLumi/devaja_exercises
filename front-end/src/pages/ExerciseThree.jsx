@@ -3,6 +3,7 @@ import styled from "styled-components";
 
 import { Page } from "../components/Page";
 import { Drawing } from "../components/Drawing";
+import { DrawingDisplay } from "../components/DrawingDisplay";
 
 import {
 	GRIDSIZE,
@@ -19,6 +20,28 @@ const Grid = styled.canvas`
 	margin-top: 2rem;
 	border: 0.2rem solid ${(props) => props.theme.dark};
 	background: ${(props) => props.theme.light};
+`;
+
+const SaveBtn = styled.button`
+	margin-top: 1rem;
+	width: 18%;
+	margin: 0 auto;
+	font-size: 1.3rem;
+	font-family: inherit;
+	padding: 0.3rem;
+	margin-top: 0.5rem;
+	color: ${(props) => props.theme.light};
+	background-color: ${(props) => props.theme.main};
+	border: 2px solid ${(props) => props.theme.dark};
+	cursor: pointer;
+	transition: border-color 0.2s, background-color 0.2s;
+
+	&:hover,
+	&:focus {
+		border-color: ${(props) => props.theme.main};
+		background-color: ${(props) => props.theme.dark};
+		outline: none;
+	}
 `;
 
 // Return index of square that is moused over
@@ -77,6 +100,17 @@ const ExerciseThree = () => {
 
 	const copyContent = (squares) => {
 		setSquares(squares);
+	};
+
+	const saveDrawing = async () => {
+		const res = await fetch("/api/drawings", {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify({ squares: squares }),
+		});
+		window.location.reload();
 	};
 
 	useEffect(() => {
@@ -171,18 +205,11 @@ const ExerciseThree = () => {
 		};
 	}, [mouse, squares, mode]);
 
-	let arr = new Array(Math.pow(GRIDSIZE, 2)).fill(false);
-	arr = arr.map((square, i) => {
-		return i % 3 ? true : false;
-	});
-
 	return (
 		<Page>
 			<Grid ref={canvasEl}></Grid>
-			<div>
-				<Drawing squares={arr} onClick={copyContent} />
-				<Drawing squares={squares} onClick={copyContent} />
-			</div>
+			<SaveBtn onClick={saveDrawing}> Save </SaveBtn>
+			<DrawingDisplay copyClick={copyContent} />
 		</Page>
 	);
 };

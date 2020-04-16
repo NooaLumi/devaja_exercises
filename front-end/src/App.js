@@ -36,6 +36,7 @@ const GlobalStyle = createGlobalStyle`
 
 	body {
 		background: ${mainTheme.secondary};
+		overflow-x: hidden;
 	}
 `;
 

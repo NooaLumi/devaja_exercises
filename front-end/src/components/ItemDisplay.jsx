@@ -4,10 +4,10 @@ import { Button } from "../components/Button";
 
 const renderItems = (filter, items) =>
 	items
-		.filter(i => i.topic === filter)
+		.filter((i) => i.topic === filter)
 		.sort()
 		.reverse()
-		.map(i => (
+		.map((i) => (
 			<Item key={i.date + i.content}>
 				<p>
 					<ItemProp>Question</ItemProp>: {i.content}
@@ -20,22 +20,22 @@ const renderItems = (filter, items) =>
 						minute: "2-digit",
 						day: "2-digit",
 						month: "short",
-						timezone: "UTC+2"
+						timezone: "UTC+2",
 					})}
 				</p>
 			</Item>
 		));
 
 const ItemProp = styled.span`
-	color: ${props => props.theme.accent};
+	color: ${(props) => props.theme.accent};
 `;
 
 const Item = styled.li`
 	word-wrap: break-word;
 	list-style: none;
 	padding: 1rem 1.5rem;
-	background-color: ${props => props.theme.light};
-	color: ${props => props.theme.dark};
+	background-color: ${(props) => props.theme.light};
+	color: ${(props) => props.theme.dark};
 	width: 100%;
 	height: 100%;
 	border-radius: 1rem;
@@ -59,7 +59,7 @@ const ItemContainer = styled.ul`
 	justify-items: center;
 	align-items: center;
 	padding: 0.8rem;
-	background-color: ${props => props.theme.secondary};
+	background-color: ${(props) => props.theme.secondary};
 `;
 
 const AddButton = styled(Button)`
@@ -74,8 +74,8 @@ const AddButton = styled(Button)`
 const ItemDisplay = ({ filter, items, showForm }) => {
 	return (
 		<ItemContainer>
-			{renderItems(filter, items)}
 			<AddButton onClick={showForm}>+</AddButton>
+			{renderItems(filter, items)}
 		</ItemContainer>
 	);
 };
