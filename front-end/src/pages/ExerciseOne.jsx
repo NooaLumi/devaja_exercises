@@ -40,12 +40,14 @@ const Side = styled.div`
 	font-weight: 600;
 	transform: ${(props) => (props.active ? "scale(1)" : "scale(0)")};
 	transition: transform 0.2s;
+	user-select: none;
 `;
 
 const WordDisplay = styled.h2`
 	display: inline-block;
 	color: ${(props) => props.theme.light};
 	margin: 1rem;
+	user-select: none;
 `;
 
 const Background = styled.div`
@@ -58,6 +60,7 @@ const Background = styled.div`
 		}
 	}
 
+	user-select: none;
 	align-items: center;
 	color: ${(props) => props.theme.dark};
 	display: flex;

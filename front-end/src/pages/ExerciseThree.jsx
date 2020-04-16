@@ -2,35 +2,24 @@ import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 
 import { Page } from "../components/Page";
+import { Drawing } from "../components/Drawing";
 
-const GRIDSIZE = 8;
+import {
+	GRIDSIZE,
+	getSquareX,
+	getSquareY,
+	clearScreen,
+	drawGrid,
+	drawSquares,
+} from "../utils/drawGrid";
 
 const Grid = styled.canvas`
 	display: block;
 	margin: 0 auto;
+	margin-top: 2rem;
 	border: 0.2rem solid ${(props) => props.theme.dark};
 	background: ${(props) => props.theme.light};
 `;
-
-const getSquareX = (i, size) => Math.floor(i % GRIDSIZE) * size;
-const getSquareY = (i, size) => Math.floor(i / GRIDSIZE) * size;
-const drawSquare = (sX, sY, size, ctx) => ctx.fillRect(sX, sY, size, size);
-const clearScreen = (ctx, size) => ctx.clearRect(0, 0, size, size);
-
-const drawGrid = (squares, sSize, ctx) => {
-	squares.forEach((s, i) => {
-		const [sX, sY] = [getSquareX(i, sSize), getSquareY(i, sSize)];
-		drawSquare(sX, sY, sSize, ctx);
-		ctx.clearRect(sX + 1, sY + 1, sSize - 2, sSize - 2);
-	});
-};
-
-const drawSquares = (squares, sSize, ctx) => {
-	squares.forEach((s, i) => {
-		s === true &&
-			drawSquare(getSquareX(i, sSize), getSquareY(i, sSize), sSize, ctx);
-	});
-};
 
 // Return index of square that is moused over
 const checkCollision = (mouse, squares, sSize) => {
@@ -85,6 +74,10 @@ const ExerciseThree = () => {
 		clicked: false,
 		mousedOver: [],
 	});
+
+	const copyContent = (squares) => {
+		setSquares(squares);
+	};
 
 	useEffect(() => {
 		const canvas = canvasEl.current;
@@ -178,9 +171,18 @@ const ExerciseThree = () => {
 		};
 	}, [mouse, squares, mode]);
 
+	let arr = new Array(Math.pow(GRIDSIZE, 2)).fill(false);
+	arr = arr.map((square, i) => {
+		return i % 3 ? true : false;
+	});
+
 	return (
 		<Page>
 			<Grid ref={canvasEl}></Grid>
+			<div>
+				<Drawing squares={arr} onClick={copyContent} />
+				<Drawing squares={squares} onClick={copyContent} />
+			</div>
 		</Page>
 	);
 };

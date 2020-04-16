@@ -14,7 +14,7 @@ const FormContainer = styled.div`
 	/* Source for animation and keyframes: https://animista.net/play/basic/scale-up */
 	animation: fade-in 0.4s cubic-bezier(0.39, 0.575, 0.565, 1) both;
 
-	position: absolute;
+	position: fixed;
 	top: 0;
 	z-index: 2;
 	width: 100%;
@@ -24,10 +24,10 @@ const FormContainer = styled.div`
 
 const Form = styled.form`
 	align-items: center;
-	background-color: ${props => props.theme.main};
+	background-color: ${(props) => props.theme.main};
 	border-radius: 2rem;
-	border: 0.2rem solid ${props => props.theme.dark};
-	color: ${props => props.theme.dark};
+	border: 0.2rem solid ${(props) => props.theme.dark};
+	color: ${(props) => props.theme.dark};
 	display: flex;
 	flex-flow: column nowrap;
 	height: 50%;
@@ -42,9 +42,9 @@ const Form = styled.form`
 const QuestionField = styled.textarea`
 	padding: 0.6em 1.33rem;
 	margin: 0.5rem;
-	border: 0.2rem solid ${props => props.theme.dark};
-	color: ${props => props.theme.dark};
-	background-color: ${props => props.theme.light};
+	border: 0.2rem solid ${(props) => props.theme.dark};
+	color: ${(props) => props.theme.dark};
+	background-color: ${(props) => props.theme.light};
 	border-radius: 0.5rem;
 	width: 70%;
 	height: 50%;
@@ -53,7 +53,7 @@ const QuestionField = styled.textarea`
 	transition: 0.2s;
 
 	&:focus {
-		border-color: ${props => props.theme.accent};
+		border-color: ${(props) => props.theme.accent};
 		outline: none;
 		width: 75%;
 		height: 55%;
@@ -68,7 +68,7 @@ const QuestionLabel = styled.label`
 const ItemForm = ({ onSubmit, visible, show }) => {
 	const [question, setQuestion] = useState("");
 
-	const onItemSubmit = e => {
+	const onItemSubmit = (e) => {
 		e.preventDefault();
 		onSubmit(question);
 		setQuestion("");

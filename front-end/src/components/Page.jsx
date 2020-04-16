@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 
 const PageContainer = styled.div`
 	display: flex;
@@ -12,29 +12,64 @@ const PageContainer = styled.div`
 	z-index: 1;
 `;
 
-const Header = styled.h1`
+const Header = styled.div`
 	display: flex;
 	align-items: center;
-	justify-content: flex-end;
+	justify-content: space-between;
 	height: 35px;
 	width: 100%;
 	font-family: inherit;
+	background-color: ${(props) => props.theme.main};
+`;
+
+const Nav = styled.div`
+	display: flex;
+	align-items: center;
+	justify-content: space-evenly;
+	height: 100%;
+	width: fit-content;
 	font-size: 1rem;
 	color: ${(props) => props.theme.dark};
-	background-color: ${(props) => props.theme.main};
+
+	& > .is-active {
+		color: ${(props) => props.theme.accent};
+	}
 
 	& > * {
+		user-select: none;
 		margin: 0 0.5rem;
+		text-decoration: none;
+		color: ${(props) => props.theme.dark};
+		&:focus {
+			color: ${(props) => props.theme.secondary};
+		}
 	}
+`;
+
+const Logo = styled.h1`
+	color: ${(props) => props.theme.dark};
+	font-size: 1.3rem;
+	margin-left: 0.5rem;
+	font-weight: normal;
+	user-select: none;
 `;
 
 const Page = ({ children }) => {
 	return (
 		<PageContainer>
 			<Header>
-				<Link to="/exercise1"> Exercise 1</Link>
-				<Link to="/exercise2"> Exercise 2</Link>
-				<Link to="/exercise3"> Exercise 3</Link>
+				<Logo>Devaja Exercises</Logo>
+				<Nav>
+					<NavLink activeClassName="is-active" to="/exercise1">
+						Exercise 1
+					</NavLink>
+					<NavLink activeClassName="is-active" to="/exercise2">
+						Exercise 2
+					</NavLink>
+					<NavLink activeClassName="is-active" to="/exercise3">
+						Exercise 3
+					</NavLink>
+				</Nav>
 			</Header>
 			{children}
 		</PageContainer>

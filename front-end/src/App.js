@@ -1,9 +1,15 @@
 import React from "react";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-import { Menu } from "./pages/Menu";
+import {
+	BrowserRouter as Router,
+	Switch,
+	Route,
+	Redirect,
+} from "react-router-dom";
+
 import { ExerciseOne } from "./pages/ExerciseOne";
 import { ExerciseTwo } from "./pages/ExerciseTwo";
 import { ExerciseThree } from "./pages/ExerciseThree";
+import { NotFound } from "./pages/NotFound";
 
 import { createGlobalStyle, ThemeProvider } from "styled-components";
 
@@ -40,7 +46,9 @@ const App = () => {
 			<Router>
 				<ThemeProvider theme={mainTheme}>
 					<Switch>
-						<Route exact path="/" children={<Menu />} />
+						<Route exact path="/">
+							<Redirect to="/exercise1" />
+						</Route>
 						<Route exact path="/exercise1">
 							<ExerciseOne />
 						</Route>
@@ -49,6 +57,9 @@ const App = () => {
 						</Route>
 						<Route exact path="/exercise3">
 							<ExerciseThree />
+						</Route>
+						<Route path="/">
+							<NotFound />
 						</Route>
 					</Switch>
 				</ThemeProvider>
